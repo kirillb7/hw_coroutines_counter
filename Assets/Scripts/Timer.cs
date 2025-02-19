@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
@@ -10,22 +9,30 @@ public class Timer : MonoBehaviour
     private int _currentStep = 0;
     private bool _isCounting = false;
 
-    public int CurrentStep => _currentStep;
-
     public event Action<float> Changed;
 
-    public void Toggle()
+    public int CurrentStep => _currentStep;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Toggle();
+        }
+    }
+
+    private void Toggle()
     {
         if (_isCounting)
         {
             _isCounting = false;
+            StopCoroutine(Count());
         }
         else
         {
             _isCounting = true;
+            StartCoroutine(Count());
         }
-
-        StartCoroutine(nameof(Count));
     }
 
     private IEnumerator Count()
